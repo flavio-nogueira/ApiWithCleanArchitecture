@@ -1,5 +1,9 @@
 using ApiWithCleanArchitecture.Infra.Ioc;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using System;
+using Microsoft.AspNetCore.Builder;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,12 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddConsole();
 
 // Add Serilog request logging
+
+// Add Serilog request logging
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
 {
     loggerConfiguration
         .Enrich.FromLogContext()
-        .WriteTo.Console()
-        .WriteTo.File("log.txt",fileSizeLimitBytes :100000, rollingInterval: RollingInterval.Day, retainedFileCountLimit: null);
+        .WriteTo.Async(a => a.Console())
+        .WriteTo.Async(a => a.File("log.txt", fileSizeLimitBytes: 100000, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true))
+        .WriteTo.Console(); // You can chain other sinks if needed
 });
 
 // Add services and configure the application

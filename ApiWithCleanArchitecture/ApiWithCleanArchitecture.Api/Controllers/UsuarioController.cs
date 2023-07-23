@@ -29,9 +29,9 @@ namespace ApiWithCleanArchitecture.Api.Controllers
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Incluir(NovoUsuarioView novoUsuarioView)
         {
-            _logger.LogInformation("Foi requisicao de inclusao de novo usuario");
+            _logger.LogInformation("Foi iniciado requisicao de inclusao de novo usuario");
             var usuario = await _usuarioService.Incluir(novoUsuarioView);
-
+            _logger.LogInformation("Finalizado requisicao de inclusao de novo usuario com sucesso ");
             return Ok("Usuario incluido com sucesso");
         }
 
@@ -46,12 +46,14 @@ namespace ApiWithCleanArchitecture.Api.Controllers
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Alterar(AlterarUsuarioView alterarUsuarioView) 
         {
+            _logger.LogInformation("Foi iniciado requisicao de alteracao do usuario");
             var usuario = await _usuarioService.Alterar(alterarUsuarioView);
             if (usuario == null)
             {
+                _logger.LogInformation("Ocorreu um erro ao alterar o Usuario");
                 return BadRequest("Ocorreu um erro ao alterar o Usuario");
             };
-
+            _logger.LogInformation("Foi finalizado requisicao de alteracao usuario");
             return Ok("Usuario alterado com sucesso"); 
         }
 
@@ -66,7 +68,9 @@ namespace ApiWithCleanArchitecture.Api.Controllers
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Excluir(int id)
         {
+            _logger.LogInformation("Foi iniciado requisicao de exclusao do usuario");
             await _usuarioService.Excluir(id);
+            _logger.LogInformation("Foi finalizado requisicao de exclusao do usuario");
 
             return NoContent();
         }
@@ -82,12 +86,14 @@ namespace ApiWithCleanArchitecture.Api.Controllers
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Selecionar(int id)
         {
+            _logger.LogInformation("Foi iniciado requisicao de pesquisa do usuario por id ");
             var usuario = await _usuarioService.SelecionarAsync(id); 
             if (usuario == null)
             {
+                _logger.LogInformation("Foi finalizado requisicao de pesquisa do usuario por id porem nao encontrado");
                 return NotFound("Usuario nao localizado");
             };
-
+            _logger.LogInformation("Foi finalizado requisicao de pesquisa do usuario por id ");
             return Ok(usuario);
         }
 
@@ -102,12 +108,14 @@ namespace ApiWithCleanArchitecture.Api.Controllers
 
         public async Task<ActionResult> SelecionarTodos()
         {
+            _logger.LogInformation("Foi iniciado requisicao listagem dos usuarios");
             var usuario = await _usuarioService.SelecionarTodosAnync();
             if (usuario == null)
             {
                 return NotFound("Usuario nao localizado");
+                _logger.LogInformation("Foi finalizado requisicao listagem dos usuarios , porem sem registros");
             };
-
+            _logger.LogInformation("Foi iniciado requisicao de alteracao do usuario");
             return Ok(usuario);
         }
     }

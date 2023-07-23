@@ -4,13 +4,6 @@
         <name>ApiWithCleanArchitecture.Api</name>
     </assembly>
     <members>
-        <member name="M:ApiWithCleanArchitecture.Api.Controllers.HomeController.Incluir(ApiWithCleanArchitecture.Application.ModelViews.Usuario.NovoUsuarioView)">
-            <summary>
-            Incluir novo Usuario
-            </summary>
-            <param name="novoUsuarioView"></param>
-            <returns></returns>
-        </member>
         <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Incluir(ApiWithCleanArchitecture.Application.ModelViews.Usuario.NovoUsuarioView)">
             <summary>
             Incluir novo Usuario
