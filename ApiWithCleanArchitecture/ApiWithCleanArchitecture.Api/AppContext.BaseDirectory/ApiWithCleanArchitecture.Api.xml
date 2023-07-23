@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApiWithCleanArchitecture.Api</name>
+    </assembly>
+    <members>
+        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Incluir(ApiWithCleanArchitecture.Application.ModelViews.Usuario.NovoUsuarioView)">
+            <summary>
+            Incluir novo Usuario
+            </summary>
+            <param name="novoUsuarioView"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Alterar(ApiWithCleanArchitecture.Application.ModelViews.Usuario.AlterarUsuarioView)">
+            <summary>
+            Alterar Usuario
+            </summary>
+            <param name="alterarUsuarioView"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Excluir(System.Int32)">
+            <summary>
+            Excliir Usuario
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Selecionar(System.Int32)">
+            <summary>
+            Consultar Usuario pelo Id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.SelecionarTodos">
+            <summary>
+            Listar todos usuarios
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
