@@ -3,6 +3,7 @@ using ApiWithCleanArchitecture.Application.ModelViews.Usuario;
 using ApiWithCleanArchitecture.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SerilogTimings;
 
 namespace ApiWithCleanArchitecture.Api.Controllers
 {
@@ -29,10 +30,15 @@ namespace ApiWithCleanArchitecture.Api.Controllers
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Incluir(NovoUsuarioView novoUsuarioView)
         {
-            _logger.LogInformation("Foi iniciado requisicao de inclusao de novo usuario");
-            var usuario = await _usuarioService.Incluir(novoUsuarioView);
-            _logger.LogInformation("Finalizado requisicao de inclusao de novo usuario com sucesso ");
+            NovoUsuarioView usuario;
+            using (Operation.Time("Tempo de inclusao do Cliente"))
+            {
+                _logger.LogInformation("Foi iniciado requisicao de inclusao de novo usuario");
+                usuario = await _usuarioService.Incluir(novoUsuarioView);
+            }
+          
             return Ok("Usuario incluido com sucesso");
+            _logger.LogInformation("Finalizado requisicao de inclusao de novo usuario com sucesso ");
         }
 
         /// <summary>

@@ -18,3 +18,4 @@
 /ApiWithCleanArchitecture/ApiWithCleanArchitecture.Domain/bin/Debug/net7.0
 /ApiWithCleanArchitecture/ApiWithCleanArchitecture.Infra.Data/bin/Debug/net7.0
 /ApiWithCleanArchitecture/ApiWithCleanArchitecture.Application/bin/Debug/net7.0
+*.txt

@@ -5,25 +5,14 @@ using Serilog;
 using System;
 using Microsoft.AspNetCore.Builder;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add logging to the console
 builder.Logging.AddConsole();
 
-// Add Serilog request logging
+IConfigurationRoot configuration = Configuration();
 
-// Add Serilog request logging
-builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
-{
-    loggerConfiguration
-        .Enrich.FromLogContext()
-        .WriteTo.Async(a => a.Console())
-        .WriteTo.Async(a => a.File("log.txt", fileSizeLimitBytes: 100000, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true))
-        .WriteTo.Console(); // You can chain other sinks if needed
-});
+GetSerialogConfiguration(builder, configuration);
 
-// Add services and configure the application
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructureSwagger();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -32,7 +21,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // Enable developer exception page for better error handling during development
+    app.UseDeveloperExceptionPage(); 
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -41,16 +30,45 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-try
+GravaLogStartWebApi(app);
+
+static IConfigurationRoot Configuration()
 {
-    Log.Information("Iniciando Api");
-    app.Run();
+    string ambiente = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+    var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile($"appsettings.{ambiente}.json")
+    .Build();
+
+    return configuration;
 }
-catch (Exception ex)
+
+static void GetSerialogConfiguration(WebApplicationBuilder builder, IConfigurationRoot configuration)
 {
-    Log.Fatal(ex, "Erro bravo rs!!");
+    builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+    {
+        loggerConfiguration
+            .Enrich.FromLogContext()
+            .ReadFrom.Configuration(configuration)
+            .WriteTo.Console();
+    });
+
 }
-finally
+
+static void GravaLogStartWebApi(WebApplication app)
 {
-    Log.CloseAndFlush();
+    try
+    {
+        Log.Information("Iniciando WebApi");
+        app.Run();
+    }
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "Erro bravo rs!!");
+    }
+    finally
+    {
+        Log.CloseAndFlush();
+    }
 }
