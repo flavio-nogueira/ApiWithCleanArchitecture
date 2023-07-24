@@ -30,6 +30,7 @@ namespace ApiWithCleanArchitecture.Api.Controllers
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Incluir(NovoUsuarioView novoUsuarioView)
         {
+            _logger.LogInformation("Objeto recebido {@novoUsuarioView}", novoUsuarioView);
             NovoUsuarioView usuario;
             using (Operation.Time("Tempo de inclusao do Cliente"))
             {
