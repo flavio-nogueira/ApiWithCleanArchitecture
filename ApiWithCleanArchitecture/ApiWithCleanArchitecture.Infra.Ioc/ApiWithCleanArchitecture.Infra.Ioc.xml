@@ -18,18 +18,19 @@
             <param name="alterarUsuarioView"></param>
             <returns></returns>
         </member>
-        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Excluir(System.Int32)">
+        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Excluir(System.String)">
             <summary>
             Excluir Usuario
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Selecionar(System.Int32)">
+        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Login(System.String,System.String)">
             <summary>
-            Consultar Usuario pelo Id
+            Logar na na api com usuario e senha
             </summary>
-            <param name="id"></param>
+            <param name="login"></param>
+            <param name="senha"></param>
             <returns></returns>
         </member>
         <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.SelecionarTodos">

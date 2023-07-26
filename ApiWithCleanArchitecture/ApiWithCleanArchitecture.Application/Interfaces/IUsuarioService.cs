@@ -9,10 +9,11 @@ namespace ApiWithCleanArchitecture.Application.Interfaces
 {
     public interface IUsuarioService
     {
-        Task<NovoUsuarioView> Incluir(NovoUsuarioView ContasPagarDTO);
-        Task<AlterarUsuarioView> Alterar(AlterarUsuarioView ContasPagarDTO);
-        Task Excluir(int id);
-        Task<AlterarUsuarioView> SelecionarAsync(int id);
+        Task<NovoUsuarioView> Incluir(NovoUsuarioView incluirUsuario);
+        Task<AlterarUsuarioView> Alterar(AlterarUsuarioView alterarUsuario); 
+        Task Excluir(string login);
+        Task<AlterarUsuarioView> SelecionarAsync(string login);
+        Task<UsuarioLogadoView> LoginAsync(string login, string senha); 
         Task<IEnumerable<AlterarUsuarioView>> SelecionarTodosAnync();
     }
 }

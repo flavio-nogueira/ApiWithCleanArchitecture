@@ -26,9 +26,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler("/error"); // =>Tratamento para mostrar mensagem tecnica do erro na tela , no caso devera ser analisar log.txt porem se quiser abilitar  erro detalhado e so trocar posicao antes if (app.Environment.IsDevelopment())
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
 
 GravaLogStartWebApi(app);
 
@@ -38,7 +41,7 @@ static IConfigurationRoot Configuration()
 
     var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile($"appsettings.{ambiente}.json")
+    .AddJsonFile($"appsettings.{ambiente}.json", optional : true)
     .Build();
 
     return configuration;

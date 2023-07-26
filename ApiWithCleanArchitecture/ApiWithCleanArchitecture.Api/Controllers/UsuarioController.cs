@@ -4,6 +4,7 @@ using ApiWithCleanArchitecture.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SerilogTimings;
+using System.Diagnostics.Eventing.Reader;
 
 namespace ApiWithCleanArchitecture.Api.Controllers
 {
@@ -30,6 +31,7 @@ namespace ApiWithCleanArchitecture.Api.Controllers
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Incluir(NovoUsuarioView novoUsuarioView)
         {
+
             _logger.LogInformation("Objeto recebido {@novoUsuarioView}", novoUsuarioView);
             NovoUsuarioView usuario;
             using (Operation.Time("Tempo de inclusao do Cliente"))
@@ -73,35 +75,51 @@ namespace ApiWithCleanArchitecture.Api.Controllers
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Excluir(int id)
+        public async Task<ActionResult> Excluir(string login)
         {
             _logger.LogInformation("Foi iniciado requisicao de exclusao do usuario");
-            await _usuarioService.Excluir(id);
+            await _usuarioService.Excluir(login);
             _logger.LogInformation("Foi finalizado requisicao de exclusao do usuario");
 
             return NoContent();
         }
-        
+
+
         /// <summary>
-        /// Consultar Usuario pelo Id
+        /// Logar na na api com usuario e senha
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="login"></param>
+        /// <param name="senha"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("Login")]
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Selecionar(int id)
+        public async Task<ActionResult> Login(string login, string senha  )
         {
-            _logger.LogInformation("Foi iniciado requisicao de pesquisa do usuario por id ");
-            var usuario = await _usuarioService.SelecionarAsync(id); 
+            _logger.LogInformation("Foi iniciado requisicao login  usuario ");
+            var usuario = await _usuarioService.LoginAsync(login,senha); 
             if (usuario == null)
             {
                 _logger.LogInformation("Foi finalizado requisicao de pesquisa do usuario por id porem nao encontrado");
-                return NotFound("Usuario nao localizado");
-            };
-            _logger.LogInformation("Foi finalizado requisicao de pesquisa do usuario por id ");
-            return Ok(usuario);
+                return Unauthorized();
+            }
+            else
+            {
+                 if (usuario.Logado == false)
+                 {
+                    return Unauthorized();
+                    _logger.LogInformation(usuario.Aviso);
+                 }
+                 else
+                {
+                    _logger.LogInformation("Foi finalizado requisicao login  usuario ");
+                    return Ok(usuario);
+                }
+
+            }
+           
         }
 
         /// <summary>
@@ -115,6 +133,7 @@ namespace ApiWithCleanArchitecture.Api.Controllers
 
         public async Task<ActionResult> SelecionarTodos()
         {
+            throw new Exception("Erro teste");
             _logger.LogInformation("Foi iniciado requisicao listagem dos usuarios");
             var usuario = await _usuarioService.SelecionarTodosAnync();
             if (usuario == null)
