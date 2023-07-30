@@ -1,11 +1,8 @@
-﻿using ApiWithCleanArchitecture.Application.ModelViews.Usuario;
-using ApiWithCleanArchitecture.Domain.Entities;
+﻿using ApiWithCleanArchitecture.Domain.Entities;
 using ApiWithCleanArchitecture.Domain.Interfaces;
 using ApiWithCleanArchitecture.Infra.Data.Context;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PasswordVerificationResult = Microsoft.AspNetCore.Identity.PasswordVerificationResult;
 
 namespace ApiWithCleanArchitecture.Infra.Data.Repositories
 {
@@ -20,7 +17,7 @@ namespace ApiWithCleanArchitecture.Infra.Data.Repositories
 
         public async Task<Usuario> AlterarAsync(Usuario usuario)
         {
-            var UsuarioConsultado = await _context.Usuarios.FindAsync(usuario.Id);
+            var UsuarioConsultado = await _context.Usuarios.FindAsync(usuario.LoginEmail);
 
             if (UsuarioConsultado == null)
             {
@@ -45,7 +42,7 @@ namespace ApiWithCleanArchitecture.Infra.Data.Repositories
             return usuario;
         }
 
-        public async Task<bool> ValidarLoginAsync(string login)  
+        public async Task<bool> ValidarLoginAsync(string login)
         {
             var UsuarioConsultado = await _context.Usuarios.FindAsync(login);
 
@@ -56,35 +53,40 @@ namespace ApiWithCleanArchitecture.Infra.Data.Repositories
             return true;
         }
 
-        public async Task<bool> ValidarSenhaAsync(Usuario usuario)  
+        public async Task<bool> ValidarSenhaAsync(Usuario usuario)
         {
             var passwordHasher = new PasswordHasher<Usuario>();
-            var usuarioConsultado = await SelecionarAsync(usuario.Login);
+            var usuarioConsultado = await ConsultaUsuarioAnync(usuario.LoginEmail);
 
             ConverteSenhaEmHash(usuario);
-            var status = passwordHasher.VerifyHashedPassword(usuario, usuarioConsultado.Senha, usuario.Senha);
 
-            switch (status)
-            {
-                case PasswordVerificationResult.Failed:
-                    return false;
-                case PasswordVerificationResult.Success:
-                    return true;
-                case PasswordVerificationResult.SuccessRehashNeeded:
-                    await AlterarAsync(usuario);
-                    return true;
-                default:
-                    throw new InvalidOperationException();
-            }
+            // if (usuarioConsultado.Senha == usuario.Senha)
+            return true;
+            // else
+            //   return false;
+            /// var status = passwordHasher.VerifyHashedPassword(usuario, usuarioConsultado.Senha, usuario.Senha);
+
+            //switch (status)
+            //{
+            //    case PasswordVerificationResult.Failed:
+            //        return false;
+            //    case PasswordVerificationResult.Success:
+            //        return true;
+            //    case PasswordVerificationResult.SuccessRehashNeeded:
+            //        await AlterarAsync(usuario);
+            //        return true;
+            //    default:
+            //        throw new InvalidOperationException();
+            //}
 
         }
 
-        public async Task<Usuario> SelecionarAsync(string login)
+        public async Task<Usuario> ConsultaUsuarioAnync(string login)
         {
             return await _context.Usuarios.FindAsync(login);
         }
 
-        public async Task<IEnumerable<Usuario>> SelecionarTodosAnync()
+        public async Task<IEnumerable<Usuario>> ConsultatTodosUsuarioAnync()
         {
             return await _context.Usuarios.AsNoTracking().ToListAsync();
         }
@@ -103,6 +105,11 @@ namespace ApiWithCleanArchitecture.Infra.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        
+        public Task<bool> ExisteUsuarioAsync(string login)
+        {
+            return  _context.Usuarios.AsNoTracking().AnyAsync(p => p.LoginEmail == login);
+        }
+
+     
     }
 }

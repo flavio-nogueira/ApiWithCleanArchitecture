@@ -25,12 +25,11 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Login(System.String,System.String)">
+        <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.Login(ApiWithCleanArchitecture.Application.ModelViews.Usuario.LoginUsuarioView)">
             <summary>
             Logar na na api com usuario e senha
             </summary>
-            <param name="login"></param>
-            <param name="senha"></param>
+            <param name="loginUsuario"></param>
             <returns></returns>
         </member>
         <member name="M:ApiWithCleanArchitecture.Api.Controllers.UsuarioController.SelecionarTodos">

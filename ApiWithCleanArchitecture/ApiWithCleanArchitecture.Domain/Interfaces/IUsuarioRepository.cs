@@ -4,13 +4,14 @@ namespace ApiWithCleanArchitecture.Domain.Interfaces
 {
     public interface IUsuarioRepository
     {
-        Task<IEnumerable<Usuario>> SelecionarTodosAnync();
-        Task<Usuario> SelecionarAsync(string login);
-        Task<bool> ValidarLoginAsync(string login); 
+        Task<IEnumerable<Usuario>> ConsultatTodosUsuarioAnync();
+        Task<Usuario> ConsultaUsuarioAnync(string login);
+        Task<bool> ValidarLoginAsync(string login);
         Task<bool> ValidarSenhaAsync(Usuario usuario);
         Task<Usuario> IncluirAsync(Usuario usuario);
         Task<Usuario> AlterarAsync(Usuario usuario);
-        Task Excluir(string login); 
+        Task<bool> ExisteUsuarioAsync(string login);
+        Task Excluir(string login);
 
     }
 }

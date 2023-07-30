@@ -15,7 +15,7 @@
             </summary>
             <example>Flavio Nogueira</example>
         </member>
-        <member name="P:ApiWithCleanArchitecture.Application.ModelViews.Usuario.NovoUsuarioView.Login">
+        <member name="P:ApiWithCleanArchitecture.Application.ModelViews.Usuario.NovoUsuarioView.LoginEmail">
             <summary>
             Login de acesso a api se possivel usar primeira letra do nome e sobrenome
             </summary>

@@ -1,8 +1,6 @@
 ﻿using ApiWithCleanArchitecture.Application.ModelViews.Error;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace ApiWithCleanArchitecture.Api.Controllers
 {

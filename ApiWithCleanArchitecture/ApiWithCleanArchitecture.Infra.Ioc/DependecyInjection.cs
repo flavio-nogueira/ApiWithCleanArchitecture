@@ -17,7 +17,7 @@ namespace ApiWithCleanArchitecture.Infra.Ioc
 {
     public static class DependecyInjection
     {
-      
+   
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // DbContext
@@ -46,11 +46,11 @@ namespace ApiWithCleanArchitecture.Infra.Ioc
                 .AddFluentValidation(p =>
                 {
                    p.RegisterValidatorsFromAssemblyContaining<NovoUsuarioValidator>();
-                   p.RegisterValidatorsFromAssemblyContaining<AlteraUsuarioValidator>();
+                   p.RegisterValidatorsFromAssemblyContaining<AlteraUsuarioValidator>(); 
+                   p.RegisterValidatorsFromAssemblyContaining<LoginUsuarioValidation>(); 
                    p.ValidatorOptions.LanguageManager.Culture = new CultureInfo("pt-BR");
                    
                 });
-
 
             return services;
         }

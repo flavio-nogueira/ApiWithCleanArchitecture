@@ -8,8 +8,8 @@ namespace ApiWithCleanArchitecture.Infra.Data.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
-            builder.HasKey(e => e.Login);
-            builder.Property(e => e.Login).IsRequired();
+            builder.HasKey(e => e.LoginEmail);
+            builder.Property(e => e.LoginEmail).IsRequired();
             builder.Property(e => e.Senha).IsRequired();
         }
     }

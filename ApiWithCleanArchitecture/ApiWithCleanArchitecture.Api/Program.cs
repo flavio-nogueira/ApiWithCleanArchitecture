@@ -1,9 +1,5 @@
 using ApiWithCleanArchitecture.Infra.Ioc;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using System;
-using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,22 +12,24 @@ GetSerialogConfiguration(builder, configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructureSwagger();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddJwtTConfiguration(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseExceptionHandler("/error");
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+ 
 }
 
-app.UseExceptionHandler("/error"); // =>Tratamento para mostrar mensagem tecnica do erro na tela , no caso devera ser analisar log.txt porem se quiser abilitar  erro detalhado e so trocar posicao antes if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI();
+//app.UseExceptionHandler("/error"); // =>Tratamento para mostrar mensagem tecnica do erro na tela , no caso devera ser analisar log.txt porem se quiser abilitar  erro detalhado e so trocar posicao antes if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.MapControllers();
-
 
 GravaLogStartWebApi(app);
 
@@ -41,7 +39,7 @@ static IConfigurationRoot Configuration()
 
     var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile($"appsettings.{ambiente}.json", optional : true)
+    .AddJsonFile($"appsettings.{ambiente}.json", optional: true)
     .Build();
 
     return configuration;
@@ -75,3 +73,14 @@ static void GravaLogStartWebApi(WebApplication app)
         Log.CloseAndFlush();
     }
 }
+
+//  static void UseSwaggerConfiguration(this IApplicationBuilder app)
+//{
+//    app.UseSwagger();
+
+//    app.UseSwaggerUI(c =>
+//    {
+//        c.RoutePrefix = string.Empty;
+//        c.SwaggerEndpoint("./swagger/v1/swagger.json", "CL V1");
+//    });
+//}

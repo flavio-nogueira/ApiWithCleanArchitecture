@@ -1,9 +1,9 @@
 ﻿
 namespace ApiWithCleanArchitecture.Application.ModelViews.Error
 {
-    public  class ErrorResponse
+    public class ErrorResponse
     {
-        public string RequestId { get; set; } 
+        public string RequestId { get; set; }
 
         public DateTime Data { get; set; }
 
